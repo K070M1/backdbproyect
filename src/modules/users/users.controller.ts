@@ -17,11 +17,18 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
+  @Get("controlado")
+  example() {
+    return this.usersService.consulta()
+  }
+
+
   @Get(':id')
   findOne(@Param('id') id: any) {
     return this.usersService.findOne(id);
   }
 
+ 
   @Put(':id')
   update(@Param('id') id: any, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);
