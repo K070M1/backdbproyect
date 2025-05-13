@@ -19,21 +19,25 @@ export class UsersService {
 
   findOne(id: any) {
     return this.prisma.usuarios.findUnique({
-      where: { "id_usuario": id },
+      where: { "id_usuario": +id },
     })
   }
 
   update(id: any, obj: any) {
     return this.prisma.usuarios.update({
-      where: {"id_usuario": id},
+      where: { "id_usuario": +id },
       data: obj
-
     })
   }
 
   remove(id: any) {
     return this.prisma.usuarios.delete({
-      where: { "id_usuario": id}
+      where: { "id_usuario": +id}
     })
+  }
+
+  async consulta(){
+    const registros = await this.prisma.$executeRaw`SELECT * FROM usuarios`
+    return registros
   }
 }
