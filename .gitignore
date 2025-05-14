@@ -54,3 +54,18 @@ pids
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# docker environment
+docker-compose.override.yml
+docker-compose.yml
+.env.docker
+pgadmin-servers.json
+
+# Local database
+*docs/
+
+# Ignorar toda la carpeta generated/
+generated/
+
+# Ignorar el archivo readme_docker.md
+readme_docker.md
