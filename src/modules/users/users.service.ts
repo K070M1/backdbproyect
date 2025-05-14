@@ -23,6 +23,10 @@ export class UsersService {
     })
   }
 
+  findByLogin(email: string) {
+    return this.prisma.usuarios.findUnique({ where: { "correo": email }});
+  }
+
   update(id: any, obj: any) {
     return this.prisma.usuarios.update({
       where: { "id_usuario": +id },
