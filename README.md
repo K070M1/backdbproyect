@@ -23,6 +23,10 @@ $ TOKEN_SECRET="dbProyectConnection"
 
 # Quinto paso (Corres el proyecto: Puerto 5000)
 $ npm run start:dev
+
+# Adicional*
+$ npm i -g @nestjs/cli
+$ nest g res modules/{nombre}
 ```
 
 ## Subir cambios al repositorio
