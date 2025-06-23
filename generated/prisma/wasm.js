@@ -177,6 +177,14 @@ exports.Prisma.UsuariosScalarFieldEnum = {
   fecha_registro: 'fecha_registro'
 };
 
+exports.Prisma.EventosScalarFieldEnum = {
+  id_evento: 'id_evento',
+  id_tipo_evento: 'id_tipo_evento',
+  descripcion: 'descripcion',
+  id_usuario: 'id_usuario',
+  fecha_registro: 'fecha_registro'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -200,7 +208,8 @@ exports.Prisma.ModelName = {
   spatial_ref_sys: 'spatial_ref_sys',
   tipo_evento: 'tipo_evento',
   ubicacion: 'ubicacion',
-  usuarios: 'usuarios'
+  usuarios: 'usuarios',
+  eventos: 'eventos'
 };
 
 /**
