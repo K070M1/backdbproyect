@@ -14,18 +14,25 @@ export class RoutesService {
   }
 
   findAll() {
-    return `This action returns all routes`;
+    return this.prisma.rutas.findMany();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} route`;
+    return this.prisma.rutas.findUnique({
+      where: { id_ruta: id }
+    });
   }
 
   update(id: number, updateRouteDto: UpdateRouteDto) {
-    return `This action updates a #${id} route`;
+    return this.prisma.rutas.update({
+      where: { id_ruta: id },
+      data: updateRouteDto
+    });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} route`;
+    return this.prisma.rutas.delete({
+      where: { id_ruta: id }
+    });
   }
 }
