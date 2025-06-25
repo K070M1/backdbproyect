@@ -5,6 +5,7 @@ import { AuthModule } from './modules/auth/auth.module'
 import { RoutesModule } from './modules/routes/routes.module';
 import { TypeEventModule } from './modules/type-event/type-event.module';
 import { EventsModule } from './modules/events/events.module';
+import { LocationModule } from './modules/location/location.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { EventsModule } from './modules/events/events.module';
     RoutesModule,
     TypeEventModule,
     EventsModule,
+    LocationModule,
     
   ],
   controllers: [],
