@@ -30,17 +30,17 @@ model detalle_ruta {
 }
 
 model rutas {
-  id_ruta                               Int                      @id @default(autoincrement())
+  id_ruta                               Int            @id @default(autoincrement())
   id_usuario                            Int?
   riesgo                                Int?
-  tiempo_estimado                       Unsupported("interval")?
+  tiempo_estimado                       String?        @db.VarChar
   id_origen                             Int?
   id_destino                            Int?
-  favorito                              Boolean?                 @default(false)
+  favorito                              Boolean?       @default(false)
   detalle_ruta                          detalle_ruta[]
-  ubicacion_rutas_id_destinoToubicacion ubicacion?               @relation("rutas_id_destinoToubicacion", fields: [id_destino], references: [id_ubicacion], onDelete: NoAction, onUpdate: NoAction)
-  ubicacion_rutas_id_origenToubicacion  ubicacion?               @relation("rutas_id_origenToubicacion", fields: [id_origen], references: [id_ubicacion], onDelete: NoAction, onUpdate: NoAction)
-  usuarios                              usuarios?                @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
+  ubicacion_rutas_id_destinoToubicacion ubicacion?     @relation("rutas_id_destinoToubicacion", fields: [id_destino], references: [id_ubicacion], onDelete: NoAction, onUpdate: NoAction)
+  ubicacion_rutas_id_origenToubicacion  ubicacion?     @relation("rutas_id_origenToubicacion", fields: [id_origen], references: [id_ubicacion], onDelete: NoAction, onUpdate: NoAction)
+  usuarios                              usuarios?      @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.

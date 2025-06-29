@@ -17,8 +17,13 @@ export class EventsService {
     return result;
   }
 
-  findAll() {
-    return this.prisma.eventos.findMany();
+  async findAll() {
+    return await this.prisma.$queryRaw`
+      SELECT e.id_evento, e.id_tipo_evento, e.descripcion, e.fecha_registro,
+        ST_X(e.ubicacion::geometry) AS lng, ST_Y(e.ubicacion::geometry) AS lat,
+        t.nombre AS tipo_nombre
+      FROM eventos e
+      JOIN tipo_evento t ON e.id_tipo_evento = t.id_tipo_evento`
   }
 
   findOne(id: number) {

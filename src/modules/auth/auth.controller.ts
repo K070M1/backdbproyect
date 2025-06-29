@@ -13,15 +13,11 @@ export class AuthController {
   
   @Post('login')
   async login(@Body() body: any, @Res() res: Response, @Req() req: Request){
-
     const userFound = await this.userService.findByLogin(body.correo)
     if (!userFound) return res.status(400).json({ message: "Correo no encontrado" });
-
     const validate = await bcrypt.compare(body.clave, userFound.clave);
     if (!validate) return res.status(400).json({ message: "Contraseña incorrecta" });
-
     const token = await this.jwtService.signAsync({ id: userFound.id_usuario, rol: userFound.rol });
-
     res.json({
       token,
       id: userFound?.id_usuario,

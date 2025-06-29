@@ -18,7 +18,10 @@ export class LocationService {
   
   findObj(obj:any) {
     return this.prisma.ubicacion.findFirst({
-      where: obj,
+      where: {
+        latitud: obj.latitud,
+        longitud: obj.longitud
+      },
     });
   }
 

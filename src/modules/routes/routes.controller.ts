@@ -33,7 +33,7 @@ export class RoutesController {
         nombre: destinoB || 'Destino Desconocido',
       })).id_ubicacion;
     }
-    if(request.tiempo_estimado) delete request.tiempo_estimado;
+    //if(request.tiempo_estimado) delete request.tiempo_estimado;
     return this.routesService.create(request);
   }
 
