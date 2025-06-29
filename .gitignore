@@ -65,7 +65,7 @@ pgadmin-servers.json
 *docs/
 
 # Ignorar toda la carpeta generated/
-/generated/*
+/generated/
 
 # Ignorar el archivo readme_docker.md
 readme_docker.md
