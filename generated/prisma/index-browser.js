@@ -142,6 +142,7 @@ exports.Prisma.RutasScalarFieldEnum = {
   id_ruta: 'id_ruta',
   id_usuario: 'id_usuario',
   riesgo: 'riesgo',
+  tiempo_estimado: 'tiempo_estimado',
   id_origen: 'id_origen',
   id_destino: 'id_destino',
   favorito: 'favorito'

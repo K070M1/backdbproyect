@@ -3973,6 +3973,7 @@ export namespace Prisma {
     id_ruta: number | null
     id_usuario: number | null
     riesgo: number | null
+    tiempo_estimado: string | null
     id_origen: number | null
     id_destino: number | null
     favorito: boolean | null
@@ -3982,6 +3983,7 @@ export namespace Prisma {
     id_ruta: number | null
     id_usuario: number | null
     riesgo: number | null
+    tiempo_estimado: string | null
     id_origen: number | null
     id_destino: number | null
     favorito: boolean | null
@@ -3991,6 +3993,7 @@ export namespace Prisma {
     id_ruta: number
     id_usuario: number
     riesgo: number
+    tiempo_estimado: number
     id_origen: number
     id_destino: number
     favorito: number
@@ -4018,6 +4021,7 @@ export namespace Prisma {
     id_ruta?: true
     id_usuario?: true
     riesgo?: true
+    tiempo_estimado?: true
     id_origen?: true
     id_destino?: true
     favorito?: true
@@ -4027,6 +4031,7 @@ export namespace Prisma {
     id_ruta?: true
     id_usuario?: true
     riesgo?: true
+    tiempo_estimado?: true
     id_origen?: true
     id_destino?: true
     favorito?: true
@@ -4036,6 +4041,7 @@ export namespace Prisma {
     id_ruta?: true
     id_usuario?: true
     riesgo?: true
+    tiempo_estimado?: true
     id_origen?: true
     id_destino?: true
     favorito?: true
@@ -4132,6 +4138,7 @@ export namespace Prisma {
     id_ruta: number
     id_usuario: number | null
     riesgo: number | null
+    tiempo_estimado: string | null
     id_origen: number | null
     id_destino: number | null
     favorito: boolean | null
@@ -4160,6 +4167,7 @@ export namespace Prisma {
     id_ruta?: boolean
     id_usuario?: boolean
     riesgo?: boolean
+    tiempo_estimado?: boolean
     id_origen?: boolean
     id_destino?: boolean
     favorito?: boolean
@@ -4174,6 +4182,7 @@ export namespace Prisma {
     id_ruta?: boolean
     id_usuario?: boolean
     riesgo?: boolean
+    tiempo_estimado?: boolean
     id_origen?: boolean
     id_destino?: boolean
     favorito?: boolean
@@ -4186,6 +4195,7 @@ export namespace Prisma {
     id_ruta?: boolean
     id_usuario?: boolean
     riesgo?: boolean
+    tiempo_estimado?: boolean
     id_origen?: boolean
     id_destino?: boolean
     favorito?: boolean
@@ -4198,12 +4208,13 @@ export namespace Prisma {
     id_ruta?: boolean
     id_usuario?: boolean
     riesgo?: boolean
+    tiempo_estimado?: boolean
     id_origen?: boolean
     id_destino?: boolean
     favorito?: boolean
   }
 
-  export type rutasOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id_ruta" | "id_usuario" | "riesgo" | "id_origen" | "id_destino" | "favorito", ExtArgs["result"]["rutas"]>
+  export type rutasOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id_ruta" | "id_usuario" | "riesgo" | "tiempo_estimado" | "id_origen" | "id_destino" | "favorito", ExtArgs["result"]["rutas"]>
   export type rutasInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     detalle_ruta?: boolean | rutas$detalle_rutaArgs<ExtArgs>
     ubicacion_rutas_id_destinoToubicacion?: boolean | rutas$ubicacion_rutas_id_destinoToubicacionArgs<ExtArgs>
@@ -4234,6 +4245,7 @@ export namespace Prisma {
       id_ruta: number
       id_usuario: number | null
       riesgo: number | null
+      tiempo_estimado: string | null
       id_origen: number | null
       id_destino: number | null
       favorito: boolean | null
@@ -4667,6 +4679,7 @@ export namespace Prisma {
     readonly id_ruta: FieldRef<"rutas", 'Int'>
     readonly id_usuario: FieldRef<"rutas", 'Int'>
     readonly riesgo: FieldRef<"rutas", 'Int'>
+    readonly tiempo_estimado: FieldRef<"rutas", 'String'>
     readonly id_origen: FieldRef<"rutas", 'Int'>
     readonly id_destino: FieldRef<"rutas", 'Int'>
     readonly favorito: FieldRef<"rutas", 'Boolean'>
@@ -10833,6 +10846,7 @@ export namespace Prisma {
     id_ruta: 'id_ruta',
     id_usuario: 'id_usuario',
     riesgo: 'riesgo',
+    tiempo_estimado: 'tiempo_estimado',
     id_origen: 'id_origen',
     id_destino: 'id_destino',
     favorito: 'favorito'
@@ -11134,6 +11148,7 @@ export namespace Prisma {
     id_ruta?: IntFilter<"rutas"> | number
     id_usuario?: IntNullableFilter<"rutas"> | number | null
     riesgo?: IntNullableFilter<"rutas"> | number | null
+    tiempo_estimado?: StringNullableFilter<"rutas"> | string | null
     id_origen?: IntNullableFilter<"rutas"> | number | null
     id_destino?: IntNullableFilter<"rutas"> | number | null
     favorito?: BoolNullableFilter<"rutas"> | boolean | null
@@ -11147,6 +11162,7 @@ export namespace Prisma {
     id_ruta?: SortOrder
     id_usuario?: SortOrderInput | SortOrder
     riesgo?: SortOrderInput | SortOrder
+    tiempo_estimado?: SortOrderInput | SortOrder
     id_origen?: SortOrderInput | SortOrder
     id_destino?: SortOrderInput | SortOrder
     favorito?: SortOrderInput | SortOrder
@@ -11163,6 +11179,7 @@ export namespace Prisma {
     NOT?: rutasWhereInput | rutasWhereInput[]
     id_usuario?: IntNullableFilter<"rutas"> | number | null
     riesgo?: IntNullableFilter<"rutas"> | number | null
+    tiempo_estimado?: StringNullableFilter<"rutas"> | string | null
     id_origen?: IntNullableFilter<"rutas"> | number | null
     id_destino?: IntNullableFilter<"rutas"> | number | null
     favorito?: BoolNullableFilter<"rutas"> | boolean | null
@@ -11176,6 +11193,7 @@ export namespace Prisma {
     id_ruta?: SortOrder
     id_usuario?: SortOrderInput | SortOrder
     riesgo?: SortOrderInput | SortOrder
+    tiempo_estimado?: SortOrderInput | SortOrder
     id_origen?: SortOrderInput | SortOrder
     id_destino?: SortOrderInput | SortOrder
     favorito?: SortOrderInput | SortOrder
@@ -11193,6 +11211,7 @@ export namespace Prisma {
     id_ruta?: IntWithAggregatesFilter<"rutas"> | number
     id_usuario?: IntNullableWithAggregatesFilter<"rutas"> | number | null
     riesgo?: IntNullableWithAggregatesFilter<"rutas"> | number | null
+    tiempo_estimado?: StringNullableWithAggregatesFilter<"rutas"> | string | null
     id_origen?: IntNullableWithAggregatesFilter<"rutas"> | number | null
     id_destino?: IntNullableWithAggregatesFilter<"rutas"> | number | null
     favorito?: BoolNullableWithAggregatesFilter<"rutas"> | boolean | null
@@ -11608,6 +11627,7 @@ export namespace Prisma {
 
   export type rutasCreateInput = {
     riesgo?: number | null
+    tiempo_estimado?: string | null
     favorito?: boolean | null
     detalle_ruta?: detalle_rutaCreateNestedManyWithoutRutasInput
     ubicacion_rutas_id_destinoToubicacion?: ubicacionCreateNestedOneWithoutRutas_rutas_id_destinoToubicacionInput
@@ -11619,6 +11639,7 @@ export namespace Prisma {
     id_ruta?: number
     id_usuario?: number | null
     riesgo?: number | null
+    tiempo_estimado?: string | null
     id_origen?: number | null
     id_destino?: number | null
     favorito?: boolean | null
@@ -11627,6 +11648,7 @@ export namespace Prisma {
 
   export type rutasUpdateInput = {
     riesgo?: NullableIntFieldUpdateOperationsInput | number | null
+    tiempo_estimado?: NullableStringFieldUpdateOperationsInput | string | null
     favorito?: NullableBoolFieldUpdateOperationsInput | boolean | null
     detalle_ruta?: detalle_rutaUpdateManyWithoutRutasNestedInput
     ubicacion_rutas_id_destinoToubicacion?: ubicacionUpdateOneWithoutRutas_rutas_id_destinoToubicacionNestedInput
@@ -11638,6 +11660,7 @@ export namespace Prisma {
     id_ruta?: IntFieldUpdateOperationsInput | number
     id_usuario?: NullableIntFieldUpdateOperationsInput | number | null
     riesgo?: NullableIntFieldUpdateOperationsInput | number | null
+    tiempo_estimado?: NullableStringFieldUpdateOperationsInput | string | null
     id_origen?: NullableIntFieldUpdateOperationsInput | number | null
     id_destino?: NullableIntFieldUpdateOperationsInput | number | null
     favorito?: NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -11648,6 +11671,7 @@ export namespace Prisma {
     id_ruta?: number
     id_usuario?: number | null
     riesgo?: number | null
+    tiempo_estimado?: string | null
     id_origen?: number | null
     id_destino?: number | null
     favorito?: boolean | null
@@ -11655,6 +11679,7 @@ export namespace Prisma {
 
   export type rutasUpdateManyMutationInput = {
     riesgo?: NullableIntFieldUpdateOperationsInput | number | null
+    tiempo_estimado?: NullableStringFieldUpdateOperationsInput | string | null
     favorito?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
@@ -11662,6 +11687,7 @@ export namespace Prisma {
     id_ruta?: IntFieldUpdateOperationsInput | number
     id_usuario?: NullableIntFieldUpdateOperationsInput | number | null
     riesgo?: NullableIntFieldUpdateOperationsInput | number | null
+    tiempo_estimado?: NullableStringFieldUpdateOperationsInput | string | null
     id_origen?: NullableIntFieldUpdateOperationsInput | number | null
     id_destino?: NullableIntFieldUpdateOperationsInput | number | null
     favorito?: NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -12181,6 +12207,7 @@ export namespace Prisma {
     id_ruta?: SortOrder
     id_usuario?: SortOrder
     riesgo?: SortOrder
+    tiempo_estimado?: SortOrder
     id_origen?: SortOrder
     id_destino?: SortOrder
     favorito?: SortOrder
@@ -12198,6 +12225,7 @@ export namespace Prisma {
     id_ruta?: SortOrder
     id_usuario?: SortOrder
     riesgo?: SortOrder
+    tiempo_estimado?: SortOrder
     id_origen?: SortOrder
     id_destino?: SortOrder
     favorito?: SortOrder
@@ -12207,6 +12235,7 @@ export namespace Prisma {
     id_ruta?: SortOrder
     id_usuario?: SortOrder
     riesgo?: SortOrder
+    tiempo_estimado?: SortOrder
     id_origen?: SortOrder
     id_destino?: SortOrder
     favorito?: SortOrder
@@ -13270,6 +13299,7 @@ export namespace Prisma {
 
   export type rutasCreateWithoutDetalle_rutaInput = {
     riesgo?: number | null
+    tiempo_estimado?: string | null
     favorito?: boolean | null
     ubicacion_rutas_id_destinoToubicacion?: ubicacionCreateNestedOneWithoutRutas_rutas_id_destinoToubicacionInput
     ubicacion_rutas_id_origenToubicacion?: ubicacionCreateNestedOneWithoutRutas_rutas_id_origenToubicacionInput
@@ -13280,6 +13310,7 @@ export namespace Prisma {
     id_ruta?: number
     id_usuario?: number | null
     riesgo?: number | null
+    tiempo_estimado?: string | null
     id_origen?: number | null
     id_destino?: number | null
     favorito?: boolean | null
@@ -13303,6 +13334,7 @@ export namespace Prisma {
 
   export type rutasUpdateWithoutDetalle_rutaInput = {
     riesgo?: NullableIntFieldUpdateOperationsInput | number | null
+    tiempo_estimado?: NullableStringFieldUpdateOperationsInput | string | null
     favorito?: NullableBoolFieldUpdateOperationsInput | boolean | null
     ubicacion_rutas_id_destinoToubicacion?: ubicacionUpdateOneWithoutRutas_rutas_id_destinoToubicacionNestedInput
     ubicacion_rutas_id_origenToubicacion?: ubicacionUpdateOneWithoutRutas_rutas_id_origenToubicacionNestedInput
@@ -13313,6 +13345,7 @@ export namespace Prisma {
     id_ruta?: IntFieldUpdateOperationsInput | number
     id_usuario?: NullableIntFieldUpdateOperationsInput | number | null
     riesgo?: NullableIntFieldUpdateOperationsInput | number | null
+    tiempo_estimado?: NullableStringFieldUpdateOperationsInput | string | null
     id_origen?: NullableIntFieldUpdateOperationsInput | number | null
     id_destino?: NullableIntFieldUpdateOperationsInput | number | null
     favorito?: NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -13582,6 +13615,7 @@ export namespace Prisma {
 
   export type rutasCreateWithoutUbicacion_rutas_id_destinoToubicacionInput = {
     riesgo?: number | null
+    tiempo_estimado?: string | null
     favorito?: boolean | null
     detalle_ruta?: detalle_rutaCreateNestedManyWithoutRutasInput
     ubicacion_rutas_id_origenToubicacion?: ubicacionCreateNestedOneWithoutRutas_rutas_id_origenToubicacionInput
@@ -13592,6 +13626,7 @@ export namespace Prisma {
     id_ruta?: number
     id_usuario?: number | null
     riesgo?: number | null
+    tiempo_estimado?: string | null
     id_origen?: number | null
     favorito?: boolean | null
     detalle_ruta?: detalle_rutaUncheckedCreateNestedManyWithoutRutasInput
@@ -13609,6 +13644,7 @@ export namespace Prisma {
 
   export type rutasCreateWithoutUbicacion_rutas_id_origenToubicacionInput = {
     riesgo?: number | null
+    tiempo_estimado?: string | null
     favorito?: boolean | null
     detalle_ruta?: detalle_rutaCreateNestedManyWithoutRutasInput
     ubicacion_rutas_id_destinoToubicacion?: ubicacionCreateNestedOneWithoutRutas_rutas_id_destinoToubicacionInput
@@ -13619,6 +13655,7 @@ export namespace Prisma {
     id_ruta?: number
     id_usuario?: number | null
     riesgo?: number | null
+    tiempo_estimado?: string | null
     id_destino?: number | null
     favorito?: boolean | null
     detalle_ruta?: detalle_rutaUncheckedCreateNestedManyWithoutRutasInput
@@ -13685,6 +13722,7 @@ export namespace Prisma {
     id_ruta?: IntFilter<"rutas"> | number
     id_usuario?: IntNullableFilter<"rutas"> | number | null
     riesgo?: IntNullableFilter<"rutas"> | number | null
+    tiempo_estimado?: StringNullableFilter<"rutas"> | string | null
     id_origen?: IntNullableFilter<"rutas"> | number | null
     id_destino?: IntNullableFilter<"rutas"> | number | null
     favorito?: BoolNullableFilter<"rutas"> | boolean | null
@@ -13792,6 +13830,7 @@ export namespace Prisma {
 
   export type rutasCreateWithoutUsuariosInput = {
     riesgo?: number | null
+    tiempo_estimado?: string | null
     favorito?: boolean | null
     detalle_ruta?: detalle_rutaCreateNestedManyWithoutRutasInput
     ubicacion_rutas_id_destinoToubicacion?: ubicacionCreateNestedOneWithoutRutas_rutas_id_destinoToubicacionInput
@@ -13801,6 +13840,7 @@ export namespace Prisma {
   export type rutasUncheckedCreateWithoutUsuariosInput = {
     id_ruta?: number
     riesgo?: number | null
+    tiempo_estimado?: string | null
     id_origen?: number | null
     id_destino?: number | null
     favorito?: boolean | null
@@ -14086,6 +14126,7 @@ export namespace Prisma {
     id_ruta?: number
     id_usuario?: number | null
     riesgo?: number | null
+    tiempo_estimado?: string | null
     id_origen?: number | null
     favorito?: boolean | null
   }
@@ -14094,12 +14135,14 @@ export namespace Prisma {
     id_ruta?: number
     id_usuario?: number | null
     riesgo?: number | null
+    tiempo_estimado?: string | null
     id_destino?: number | null
     favorito?: boolean | null
   }
 
   export type rutasUpdateWithoutUbicacion_rutas_id_destinoToubicacionInput = {
     riesgo?: NullableIntFieldUpdateOperationsInput | number | null
+    tiempo_estimado?: NullableStringFieldUpdateOperationsInput | string | null
     favorito?: NullableBoolFieldUpdateOperationsInput | boolean | null
     detalle_ruta?: detalle_rutaUpdateManyWithoutRutasNestedInput
     ubicacion_rutas_id_origenToubicacion?: ubicacionUpdateOneWithoutRutas_rutas_id_origenToubicacionNestedInput
@@ -14110,6 +14153,7 @@ export namespace Prisma {
     id_ruta?: IntFieldUpdateOperationsInput | number
     id_usuario?: NullableIntFieldUpdateOperationsInput | number | null
     riesgo?: NullableIntFieldUpdateOperationsInput | number | null
+    tiempo_estimado?: NullableStringFieldUpdateOperationsInput | string | null
     id_origen?: NullableIntFieldUpdateOperationsInput | number | null
     favorito?: NullableBoolFieldUpdateOperationsInput | boolean | null
     detalle_ruta?: detalle_rutaUncheckedUpdateManyWithoutRutasNestedInput
@@ -14119,12 +14163,14 @@ export namespace Prisma {
     id_ruta?: IntFieldUpdateOperationsInput | number
     id_usuario?: NullableIntFieldUpdateOperationsInput | number | null
     riesgo?: NullableIntFieldUpdateOperationsInput | number | null
+    tiempo_estimado?: NullableStringFieldUpdateOperationsInput | string | null
     id_origen?: NullableIntFieldUpdateOperationsInput | number | null
     favorito?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
   export type rutasUpdateWithoutUbicacion_rutas_id_origenToubicacionInput = {
     riesgo?: NullableIntFieldUpdateOperationsInput | number | null
+    tiempo_estimado?: NullableStringFieldUpdateOperationsInput | string | null
     favorito?: NullableBoolFieldUpdateOperationsInput | boolean | null
     detalle_ruta?: detalle_rutaUpdateManyWithoutRutasNestedInput
     ubicacion_rutas_id_destinoToubicacion?: ubicacionUpdateOneWithoutRutas_rutas_id_destinoToubicacionNestedInput
@@ -14135,6 +14181,7 @@ export namespace Prisma {
     id_ruta?: IntFieldUpdateOperationsInput | number
     id_usuario?: NullableIntFieldUpdateOperationsInput | number | null
     riesgo?: NullableIntFieldUpdateOperationsInput | number | null
+    tiempo_estimado?: NullableStringFieldUpdateOperationsInput | string | null
     id_destino?: NullableIntFieldUpdateOperationsInput | number | null
     favorito?: NullableBoolFieldUpdateOperationsInput | boolean | null
     detalle_ruta?: detalle_rutaUncheckedUpdateManyWithoutRutasNestedInput
@@ -14144,6 +14191,7 @@ export namespace Prisma {
     id_ruta?: IntFieldUpdateOperationsInput | number
     id_usuario?: NullableIntFieldUpdateOperationsInput | number | null
     riesgo?: NullableIntFieldUpdateOperationsInput | number | null
+    tiempo_estimado?: NullableStringFieldUpdateOperationsInput | string | null
     id_destino?: NullableIntFieldUpdateOperationsInput | number | null
     favorito?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
@@ -14167,6 +14215,7 @@ export namespace Prisma {
   export type rutasCreateManyUsuariosInput = {
     id_ruta?: number
     riesgo?: number | null
+    tiempo_estimado?: string | null
     id_origen?: number | null
     id_destino?: number | null
     favorito?: boolean | null
@@ -14227,6 +14276,7 @@ export namespace Prisma {
 
   export type rutasUpdateWithoutUsuariosInput = {
     riesgo?: NullableIntFieldUpdateOperationsInput | number | null
+    tiempo_estimado?: NullableStringFieldUpdateOperationsInput | string | null
     favorito?: NullableBoolFieldUpdateOperationsInput | boolean | null
     detalle_ruta?: detalle_rutaUpdateManyWithoutRutasNestedInput
     ubicacion_rutas_id_destinoToubicacion?: ubicacionUpdateOneWithoutRutas_rutas_id_destinoToubicacionNestedInput
@@ -14236,6 +14286,7 @@ export namespace Prisma {
   export type rutasUncheckedUpdateWithoutUsuariosInput = {
     id_ruta?: IntFieldUpdateOperationsInput | number
     riesgo?: NullableIntFieldUpdateOperationsInput | number | null
+    tiempo_estimado?: NullableStringFieldUpdateOperationsInput | string | null
     id_origen?: NullableIntFieldUpdateOperationsInput | number | null
     id_destino?: NullableIntFieldUpdateOperationsInput | number | null
     favorito?: NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -14245,6 +14296,7 @@ export namespace Prisma {
   export type rutasUncheckedUpdateManyWithoutUsuariosInput = {
     id_ruta?: IntFieldUpdateOperationsInput | number
     riesgo?: NullableIntFieldUpdateOperationsInput | number | null
+    tiempo_estimado?: NullableStringFieldUpdateOperationsInput | string | null
     id_origen?: NullableIntFieldUpdateOperationsInput | number | null
     id_destino?: NullableIntFieldUpdateOperationsInput | number | null
     favorito?: NullableBoolFieldUpdateOperationsInput | boolean | null
