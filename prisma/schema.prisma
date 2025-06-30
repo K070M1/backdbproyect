@@ -29,17 +29,17 @@ model detalle_ruta {
 }
 
 model rutas {
-  id_ruta                               Int                      @id @default(autoincrement())
+  id_ruta                               Int            @id @default(autoincrement())
   id_usuario                            Int?
   riesgo                                Int?
-  tiempo_estimado                       Unsupported("interval")?
+  tiempo_estimado                       String?        @db.VarChar
   id_origen                             Int?
   id_destino                            Int?
-  favorito                              Boolean?                 @default(false)
+  favorito                              Boolean?       @default(false)
   detalle_ruta                          detalle_ruta[]
-  ubicacion_rutas_id_destinoToubicacion ubicacion?               @relation("rutas_id_destinoToubicacion", fields: [id_destino], references: [id_ubicacion], onDelete: NoAction, onUpdate: NoAction)
-  ubicacion_rutas_id_origenToubicacion  ubicacion?               @relation("rutas_id_origenToubicacion", fields: [id_origen], references: [id_ubicacion], onDelete: NoAction, onUpdate: NoAction)
-  usuarios                              usuarios?                @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
+  ubicacion_rutas_id_destinoToubicacion ubicacion?     @relation("rutas_id_destinoToubicacion", fields: [id_destino], references: [id_ubicacion], onDelete: NoAction, onUpdate: NoAction)
+  ubicacion_rutas_id_origenToubicacion  ubicacion?     @relation("rutas_id_origenToubicacion", fields: [id_origen], references: [id_ubicacion], onDelete: NoAction, onUpdate: NoAction)
+  usuarios                              usuarios?      @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
@@ -52,8 +52,9 @@ model spatial_ref_sys {
 }
 
 model tipo_evento {
-  id_tipo_evento Int    @id @default(autoincrement())
-  nombre         String @db.VarChar(100)
+  id_tipo_evento Int       @id @default(autoincrement())
+  nombre         String    @db.VarChar(100)
+  eventos        eventos[]
 }
 
 model ubicacion {
@@ -75,6 +76,18 @@ model usuarios {
   correo         String         @unique @db.VarChar(100)
   fecha_registro DateTime?      @default(now()) @db.Timestamp(6)
   calificacion   calificacion[]
+  eventos        eventos[]
   rutas          rutas[]
   ubicacion      ubicacion[]
+}
+
+model eventos {
+  id_evento      Int                       @id(map: "evento_pkey") @default(autoincrement())
+  id_tipo_evento Int?
+  descripcion    String?
+  id_usuario     Int?
+  fecha_registro DateTime?                 @default(now()) @db.Timestamp(6)
+  ubicacion      Unsupported("geography")?
+  tipo_evento    tipo_evento?              @relation(fields: [id_tipo_evento], references: [id_tipo_evento], onDelete: NoAction, onUpdate: NoAction, map: "evento_id_tipo_evento_fkey")
+  usuarios       usuarios?                 @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction, map: "evento_id_usuario_fkey")
 }

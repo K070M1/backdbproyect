@@ -1,0 +1,47 @@
+import { Injectable } from '@nestjs/common';
+import { CreateEventDto } from './dto/create-event.dto';
+import { UpdateEventDto } from './dto/update-event.dto';
+import { PrismaService } from 'src/db/prisma.service';
+
+@Injectable()
+export class EventsService {
+  constructor(private prisma: PrismaService) {}
+
+  async create(createEventDto: any) {
+    const { id_tipo_evento, descripcion, id_usuario, fecha_registro, lat, lng } = createEventDto;
+    const result = await this.prisma.$executeRaw`
+      INSERT INTO eventos (id_tipo_evento, descripcion, id_usuario, fecha_registro, ubicacion)
+      VALUES (${id_tipo_evento}, ${descripcion}, ${id_usuario}, ${fecha_registro}, ST_SetSRID(ST_MakePoint(${lng}, ${lat}), 4326))
+      RETURNING *;
+    `;
+    return result;
+  }
+
+  async findAll() {
+    return await this.prisma.$queryRaw`
+      SELECT e.id_evento, e.id_tipo_evento, e.descripcion, e.fecha_registro,
+        ST_X(e.ubicacion::geometry) AS lng, ST_Y(e.ubicacion::geometry) AS lat,
+        t.nombre AS tipo_nombre
+      FROM eventos e
+      JOIN tipo_evento t ON e.id_tipo_evento = t.id_tipo_evento`
+  }
+
+  findOne(id: number) {
+    return this.prisma.eventos.findUnique({
+      where: { id_evento: id }
+    });
+  }
+
+  update(id: number, updateEventDto: UpdateEventDto) {
+    return this.prisma.eventos.update({
+      where: { id_evento: id },
+      data: updateEventDto
+    });
+  }
+
+  remove(id: number) {
+    return this.prisma.eventos.delete({
+      where: { id_evento: id }
+    });
+  }
+}
