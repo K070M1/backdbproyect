@@ -19,6 +19,38 @@ export class AuthController {
     private readonly userService: UsersService,
   ) {}
 
+  @Post('register')
+  async register(@Body() body: any, @Req() req: Request) {
+    const { nombre_usuario, correo, clave, rol } = body;
+
+    if (!nombre_usuario || !correo || !clave) {
+      throw new BadRequestException('Todos los campos son obligatorios');
+    }
+
+    let finalRol = 'usuario';
+
+    const token = req.cookies?.['token'];
+    if (token && rol) {
+      try {
+        const payload = await this.jwtService.verifyAsync(token);
+        if (payload.rol === 'admin' && ['admin', 'moderador', 'usuario'].includes(rol)) {
+          finalRol = rol;
+        } else {
+          throw new BadRequestException('No autorizado para asignar rol');
+        }
+      } catch {
+        throw new BadRequestException('Token inválido o expirado');
+      }
+    }
+
+    return this.userService.create({
+      nombre_usuario,
+      correo,
+      clave,
+      rol: finalRol,
+    });
+  }
+
   @Post('login')
   async login(
     @Body() body: { correo: string; clave: string },
@@ -58,7 +90,7 @@ export class AuthController {
       sameSite: 'lax',
     });
 
-    return res.json({ message: 'Sesión cerrada' });
+    return res.status(200).json({ message: 'Sesión cerrada' });
   }
 
   @Get('me')

@@ -21,12 +21,14 @@ async function main() {
         clave: hashedPassword1,
         rol: 'admin',
         correo: 'admin@demo.com',
+        avatar_url: '/uploads/avatars/admin.jpg', // opcional
       },
       {
         nombre_usuario: 'Usuario Demo',
         clave: hashedPassword2,
         rol: 'usuario',
         correo: 'usuario@demo.com',
+        avatar_url: '/uploads/avatars/usuario.jpg', // opcional
       },
     ],
     skipDuplicates: true,

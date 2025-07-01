@@ -10,6 +10,9 @@ ALTER TABLE "rutas" ALTER COLUMN "tiempo_estimado" SET DATA TYPE VARCHAR;
 -- AlterTable
 ALTER TABLE "usuarios" ADD COLUMN     "activo" BOOLEAN NOT NULL DEFAULT true;
 
+-- AlterTable
+ALTER TABLE "usuarios" ADD COLUMN "avatar_url" VARCHAR(255);
+
 -- CreateTable
 CREATE TABLE "eventos" (
     "id_evento" SERIAL NOT NULL,

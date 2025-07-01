@@ -12,7 +12,7 @@ import * as bcrypt from 'bcrypt';
 export class UsersService {
   constructor(private prisma: PrismaService) {}
 
-  async create(data: CreateUserDto) {
+  async create(data: CreateUserDto, avatarFileName?: string) {
     const existing = await this.prisma.usuarios.findUnique({
       where: { correo: data.correo },
     });
@@ -29,6 +29,7 @@ export class UsersService {
         clave: hashedPassword,
         rol: data.rol || 'usuario',
         activo: true,
+        avatar_url: avatarFileName ? `/uploads/avatars/${avatarFileName}` : null,
       },
     });
   }
@@ -80,6 +81,6 @@ export class UsersService {
   }
 
   async consulta() {
-    return await this.prisma.$queryRaw`SELECT * FROM usuarios`;
+    return this.prisma.$queryRaw`SELECT * FROM usuarios`;
   }
 }

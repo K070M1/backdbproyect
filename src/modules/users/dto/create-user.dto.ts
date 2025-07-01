@@ -5,6 +5,7 @@ import {
   MaxLength,
   IsOptional,
   IsIn,
+  IsUrl,
 } from 'class-validator';
 
 export class CreateUserDto {
@@ -23,4 +24,8 @@ export class CreateUserDto {
   @IsOptional()
   @IsIn(['admin', 'moderador', 'usuario'])
   rol?: string = 'usuario';
+
+  @IsOptional()
+  @IsUrl()
+  avatar_url?: string;
 }

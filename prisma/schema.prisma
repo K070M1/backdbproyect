@@ -76,6 +76,7 @@ model usuarios {
   correo         String         @unique @db.VarChar(100)
   fecha_registro DateTime?      @default(now()) @db.Timestamp(6)
   activo         Boolean        @default(true)
+  avatar_url     String?        @db.VarChar(255)
   calificacion   calificacion[]
   eventos        eventos[]
   rutas          rutas[]
