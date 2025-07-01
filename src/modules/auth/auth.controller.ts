@@ -1,4 +1,12 @@
-import { Body, Controller, Post, BadRequestException, Get, Res, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  BadRequestException,
+  Get,
+  Res,
+  Req,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcryptjs';
@@ -12,7 +20,10 @@ export class AuthController {
   ) {}
 
   @Post('login')
-  async login(@Body() body: { correo: string; clave: string }, @Res() res: Response) {
+  async login(
+    @Body() body: { correo: string; clave: string },
+    @Res() res: Response,
+  ) {
     const userFound = await this.userService.findByLogin(body.correo);
     if (!userFound) throw new BadRequestException('Correo no encontrado');
 
