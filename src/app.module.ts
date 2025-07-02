@@ -6,6 +6,7 @@ import { RoutesModule } from './modules/routes/routes.module';
 import { TypeEventModule } from './modules/type-event/type-event.module';
 import { EventsModule } from './modules/events/events.module';
 import { LocationModule } from './modules/location/location.module';
+import { CalificationModule } from './modules/calification/calification.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { LocationModule } from './modules/location/location.module';
     TypeEventModule,
     EventsModule,
     LocationModule,
+    CalificationModule,
     
   ],
   controllers: [],
