@@ -13,6 +13,14 @@ ALTER TABLE "usuarios" ADD COLUMN     "activo" BOOLEAN NOT NULL DEFAULT true;
 -- AlterTable
 ALTER TABLE "usuarios" ADD COLUMN "avatar_url" VARCHAR(255);
 
+-- AlterTable
+ALTER TABLE "ubicacion"
+ADD COLUMN "descripcion" TEXT,
+ADD COLUMN "riesgo" VARCHAR(10),
+ADD COLUMN "createdAt" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN "updatedAt" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
+
+
 -- CreateTable
 CREATE TABLE "eventos" (
     "id_evento" SERIAL NOT NULL,

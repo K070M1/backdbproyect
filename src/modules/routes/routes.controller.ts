@@ -6,35 +6,59 @@ import { UpdateRouteDto } from './dto/update-route.dto';
 
 @Controller('routes')
 export class RoutesController {
-  constructor(private readonly routesService: RoutesService, private readonly locationService: LocationService) {}
+  constructor(
+    private readonly routesService: RoutesService,
+    private readonly locationService: LocationService,
+  ) {}
 
   @Post()
   async create(@Body() createRouteDto: any) {
-    const { origenCoords, destinoCoords, origen:origenB, destino:destinoB, ...request } = createRouteDto;
-    
-    const origen = await this.locationService.findObj({ latitud: origenCoords.lat, longitud: origenCoords.lng });
-    if(origen){
+    const {
+      origenCoords,
+      destinoCoords,
+      origen: origenB,
+      destino: destinoB,
+      id_usuario,
+      ...request
+    } = createRouteDto;
+
+    const origen = await this.locationService.findByCoordinates(
+      origenCoords.lat,
+      origenCoords.lng,
+    );
+
+    if (origen) {
       request.id_origen = origen.id_ubicacion;
-    }else{
-      request.id_origen = (await this.locationService.create({
-        latitud: origenCoords.lat,
-        longitud: origenCoords.lng,
-        nombre: origenB || 'Origen Desconocido',
-      })).id_ubicacion;
+    } else {
+      request.id_origen = (
+        await this.locationService.create({
+          latitud: origenCoords.lat,
+          longitud: origenCoords.lng,
+          nombre: origenB || 'Origen Desconocido',
+          id_usuario,
+        })
+      ).id_ubicacion;
     }
 
-    const destino = await this.locationService.findObj({ latitud: destinoCoords.lat, longitud: destinoCoords.lng });
-    if(destino){
+    const destino = await this.locationService.findByCoordinates(
+      destinoCoords.lat,
+      destinoCoords.lng,
+    );
+
+    if (destino) {
       request.id_destino = destino.id_ubicacion;
-    }else{
-      request.id_destino = (await this.locationService.create({
-        latitud: destinoCoords.lat,
-        longitud: destinoCoords.lng,
-        nombre: destinoB || 'Destino Desconocido',
-      })).id_ubicacion;
+    } else {
+      request.id_destino = (
+        await this.locationService.create({
+          latitud: destinoCoords.lat,
+          longitud: destinoCoords.lng,
+          nombre: destinoB || 'Destino Desconocido',
+          id_usuario,
+        })
+      ).id_ubicacion;
     }
-    //if(request.tiempo_estimado) delete request.tiempo_estimado;
-    return this.routesService.create(request);
+
+    return this.routesService.create({ ...request, id_usuario });
   }
 
   @Get()
