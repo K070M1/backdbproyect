@@ -17,7 +17,7 @@ export class AuthController {
   constructor(
     private readonly jwtService: JwtService,
     private readonly userService: UsersService,
-  ) {}
+  ) { }
 
   @Post('register')
   async register(@Body() body: any, @Req() req: Request) {
@@ -57,10 +57,11 @@ export class AuthController {
     @Res() res: Response,
   ) {
     const userFound = await this.userService.findByLogin(body.correo);
-    if (!userFound) throw new BadRequestException('Correo no encontrado');
+    if (!userFound) throw new BadRequestException({ message: 'El correo ingresado no está registrado.' });
+
 
     const isValid = await bcrypt.compare(body.clave, userFound.clave);
-    if (!isValid) throw new BadRequestException('Contraseña incorrecta');
+    if (!isValid) throw new BadRequestException({ message: 'La contraseña ingresada es incorrecta.'});
 
     const token = await this.jwtService.signAsync({
       id: userFound.id_usuario,
