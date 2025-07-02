@@ -59,13 +59,18 @@ model tipo_evento {
 
 model ubicacion {
   id_ubicacion                      Int       @id @default(autoincrement())
-  id_usuario                        Int?
+  id_usuario                        Int
   latitud                           Decimal   @db.Decimal(9, 6)
   longitud                          Decimal   @db.Decimal(9, 6)
   nombre                            String?   @db.VarChar(100)
+  descripcion                       String?   @db.Text
+  riesgo                            String?   @db.VarChar(10)  // "Bajo" | "Medio" | "Alto"
+  createdAt                         DateTime  @default(now())
+  updatedAt                         DateTime  @updatedAt
+
   rutas_rutas_id_destinoToubicacion rutas[]   @relation("rutas_id_destinoToubicacion")
   rutas_rutas_id_origenToubicacion  rutas[]   @relation("rutas_id_origenToubicacion")
-  usuarios                          usuarios? @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
+  usuarios                          usuarios @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model usuarios {

@@ -1,26 +1,22 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { PrismaService } from 'src/db/prisma.service';
 import { CreateLocationDto } from './dto/create-location.dto';
 import { UpdateLocationDto } from './dto/update-location.dto';
-import { PrismaService } from 'src/db/prisma.service';
 
 @Injectable()
 export class LocationService {
   constructor(private prisma: PrismaService) {}
-  create(createLocationDto: any) {
-    return this.prisma.ubicacion.create({
-      data: createLocationDto,
-    });
+
+  create(data: CreateLocationDto) {
+    return this.prisma.ubicacion.create({ data });
   }
 
   findAll() {
-    return this.prisma.ubicacion.findMany();
-  }
-  
-  findObj(obj:any) {
-    return this.prisma.ubicacion.findFirst({
-      where: {
-        latitud: obj.latitud,
-        longitud: obj.longitud
+    return this.prisma.ubicacion.findMany({
+      include: {
+        usuarios: true,
+        rutas_rutas_id_destinoToubicacion: true,
+        rutas_rutas_id_origenToubicacion: true,
       },
     });
   }
@@ -28,17 +24,53 @@ export class LocationService {
   findOne(id: number) {
     return this.prisma.ubicacion.findUnique({
       where: { id_ubicacion: id },
+      include: {
+        usuarios: true,
+        rutas_rutas_id_destinoToubicacion: true,
+        rutas_rutas_id_origenToubicacion: true,
+      },
     });
   }
 
-  update(id: number, updateLocationDto: UpdateLocationDto) {
+  findByCoordinates(lat: number, lng: number) {
+    return this.prisma.ubicacion.findFirst({
+      where: {
+        latitud: lat,
+        longitud: lng,
+      },
+      include: {
+        usuarios: true,
+        rutas_rutas_id_destinoToubicacion: true,
+        rutas_rutas_id_origenToubicacion: true,
+      },
+    });
+  }
+
+  async findObj(params: { latitud: number; longitud: number }) {
+    return await this.prisma.ubicacion.findFirst({
+      where: {
+        latitud: params.latitud,
+        longitud: params.longitud,
+      },
+    });
+  }
+
+  update(id: number, data: UpdateLocationDto) {
     return this.prisma.ubicacion.update({
       where: { id_ubicacion: id },
-      data: updateLocationDto,
+      data,
     });
   }
 
-  remove(id: number) {
+  async remove(id: number) {
+    const ubicacion = await this.prisma.ubicacion.findUnique({
+      where: { id_ubicacion: id },
+    });
+
+    if (!ubicacion) {
+      throw new NotFoundException('Ubicación no encontrada');
+    }
+
     return this.prisma.ubicacion.delete({
       where: { id_ubicacion: id },
     });
