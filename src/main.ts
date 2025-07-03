@@ -30,9 +30,9 @@ async function bootstrap() {
     prefix: '/public/', // URL pública: http://localhost:5000/public/filename.jpg
   });
 
-  await app.listen(5000);
-  console.log('✅ Backend iniciado en http://localhost:5000/api');
-  console.log('🌐 Archivos públicos en http://localhost:5000/public');
+  await app.listen(5001);
+  console.log('✅ Backend iniciado en http://localhost:5001/api');
+  console.log('🌐 Archivos públicos en http://localhost:5001/public');
 }
 
 bootstrap();
