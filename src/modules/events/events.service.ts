@@ -27,16 +27,25 @@ export class EventsService {
   }
 
   findOne(id: number) {
-    return this.prisma.eventos.findUnique({
-      where: { id_evento: id }
-    });
+    return this.prisma.$queryRaw`
+      SELECT e.id_evento, e.id_tipo_evento, e.descripcion, e.fecha_registro,
+        ST_X(e.ubicacion::geometry) AS lng, ST_Y(e.ubicacion::geometry) AS lat,
+        t.nombre AS tipo_nombre
+      FROM eventos e
+      JOIN tipo_evento t ON e.id_tipo_evento = t.id_tipo_evento
+      WHERE e.id_evento = ${id}
+    `;
   }
 
-  update(id: number, updateEventDto: UpdateEventDto) {
-    return this.prisma.eventos.update({
-      where: { id_evento: id },
-      data: updateEventDto
-    });
+  update(id: number, updateEventDto: any) {
+    return this.prisma.$queryRaw`
+      UPDATE eventos
+      SET id_tipo_evento = ${updateEventDto.id_tipo_evento},
+          descripcion = ${updateEventDto.descripcion},
+          ubicacion = ST_SetSRID(ST_MakePoint(${updateEventDto.lng}, ${updateEventDto.lat}), 4326),
+          id_usuario = ${updateEventDto.id_usuario}
+      WHERE id_evento = ${id}
+    `;
   }
 
   remove(id: number) {

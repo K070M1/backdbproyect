@@ -23,8 +23,16 @@ export class EventsController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateEventDto: UpdateEventDto) {
-    return this.eventsService.update(+id, updateEventDto);
+  update(@Param('id') id: string, @Body() updateEventDto: any) {
+    const obj = {
+      id_tipo_evento: parseInt(updateEventDto?.tipo),
+      descripcion: updateEventDto?.descripcion,
+      //id_usuario: parseInt(updateEventDto?.id_usuario) || 1, // Default user ID if not provided
+      fecha_registro: updateEventDto?.fecha_registro || new Date(),
+      lat: updateEventDto?.lat,
+      lng: updateEventDto?.lng
+    }
+    return this.eventsService.update(+id, obj);
   }
 
   @Delete(':id')
