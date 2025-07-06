@@ -121,6 +121,7 @@ model zonas_seguras {
   area           Unsupported("geography")?
   created_at     DateTime                  @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamptz(6)
   updated_at     DateTime?                 @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
+  forma          String?                   @db.VarChar
   calificaciones calificaciones[]
   usuarios       usuarios?                 @relation(fields: [id_usuario], references: [id_usuario], onDelete: Cascade, onUpdate: NoAction)
 }
