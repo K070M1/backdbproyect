@@ -8,10 +8,10 @@ export class EventsService {
   constructor(private prisma: PrismaService) {}
 
   async create(createEventDto: any) {
-    const { id_tipo_evento, descripcion, id_usuario, fecha_registro, lat, lng } = createEventDto;
+    const { id_tipo_evento, descripcion, id_usuario, lat, lng } = createEventDto;
     const result = await this.prisma.$executeRaw`
-      INSERT INTO eventos (id_tipo_evento, descripcion, id_usuario, fecha_registro, ubicacion)
-      VALUES (${id_tipo_evento}, ${descripcion}, ${id_usuario}, ${fecha_registro}, ST_SetSRID(ST_MakePoint(${lng}, ${lat}), 4326))
+      INSERT INTO eventos (id_tipo_evento, descripcion, id_usuario, ubicacion)
+      VALUES (${id_tipo_evento}, ${descripcion}, ${id_usuario}, ST_SetSRID(ST_MakePoint(${lng}, ${lat}), 4326))
       RETURNING *;
     `;
     return result;
@@ -19,7 +19,7 @@ export class EventsService {
 
   async findAll() {
     return await this.prisma.$queryRaw`
-      SELECT e.id_evento, e.id_tipo_evento, e.descripcion, e.fecha_registro,
+      SELECT e.id_evento, e.id_tipo_evento, e.descripcion, e.created_at AS fecha_registro,
         ST_X(e.ubicacion::geometry) AS lng, ST_Y(e.ubicacion::geometry) AS lat,
         t.nombre AS tipo_nombre
       FROM eventos e
@@ -28,7 +28,7 @@ export class EventsService {
 
   findOne(id: number) {
     return this.prisma.$queryRaw`
-      SELECT e.id_evento, e.id_tipo_evento, e.descripcion, e.fecha_registro,
+      SELECT e.id_evento, e.id_tipo_evento, e.descripcion, e.created_at AS fecha_registro,
         ST_X(e.ubicacion::geometry) AS lng, ST_Y(e.ubicacion::geometry) AS lat,
         t.nombre AS tipo_nombre
       FROM eventos e
@@ -49,8 +49,6 @@ export class EventsService {
   }
 
   remove(id: number) {
-    return this.prisma.eventos.delete({
-      where: { id_evento: id }
-    });
+    return this.prisma.eventos.delete({ where: { id_evento: id } });
   }
 }

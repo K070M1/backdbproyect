@@ -8,46 +8,40 @@ export class LocationService {
   constructor(private prisma: PrismaService) {}
 
   create(data: CreateLocationDto) {
-    return this.prisma.ubicacion.create({ data });
+    return this.prisma.ubicaciones.create({ data });
   }
 
   findAll() {
-    return this.prisma.ubicacion.findMany({
+    return this.prisma.ubicaciones.findMany({
       include: {
-        usuarios: true,
-        rutas_rutas_id_destinoToubicacion: true,
-        rutas_rutas_id_origenToubicacion: true,
+        usuarios: true
       },
     });
   }
 
   findOne(id: number) {
-    return this.prisma.ubicacion.findUnique({
+    return this.prisma.ubicaciones.findUnique({
       where: { id_ubicacion: id },
       include: {
-        usuarios: true,
-        rutas_rutas_id_destinoToubicacion: true,
-        rutas_rutas_id_origenToubicacion: true,
+        usuarios: true
       },
     });
   }
 
   findByCoordinates(lat: number, lng: number) {
-    return this.prisma.ubicacion.findFirst({
+    return this.prisma.ubicaciones.findFirst({
       where: {
         latitud: lat,
         longitud: lng,
       },
       include: {
-        usuarios: true,
-        rutas_rutas_id_destinoToubicacion: true,
-        rutas_rutas_id_origenToubicacion: true,
+        usuarios: true
       },
     });
   }
 
   async findObj(params: { latitud: number; longitud: number }) {
-    return await this.prisma.ubicacion.findFirst({
+    return await this.prisma.ubicaciones.findFirst({
       where: {
         latitud: params.latitud,
         longitud: params.longitud,
@@ -56,14 +50,14 @@ export class LocationService {
   }
 
   update(id: number, data: UpdateLocationDto) {
-    return this.prisma.ubicacion.update({
+    return this.prisma.ubicaciones.update({
       where: { id_ubicacion: id },
       data,
     });
   }
 
   async remove(id: number) {
-    const ubicacion = await this.prisma.ubicacion.findUnique({
+    const ubicacion = await this.prisma.ubicaciones.findUnique({
       where: { id_ubicacion: id },
     });
 
@@ -71,7 +65,7 @@ export class LocationService {
       throw new NotFoundException('Ubicación no encontrada');
     }
 
-    return this.prisma.ubicacion.delete({
+    return this.prisma.ubicaciones.delete({
       where: { id_ubicacion: id },
     });
   }

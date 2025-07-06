@@ -13,7 +13,7 @@ export class UsersService {
   constructor(private prisma: PrismaService) {}
 
   async create(data: CreateUserDto, avatarFileName?: string) {
-    const existing = await this.prisma.usuarios.findUnique({
+    const existing = await this.prisma.usuarios.findFirst({
       where: { correo: data.correo },
     });
 
@@ -23,7 +23,7 @@ export class UsersService {
 
     const hashedPassword = await bcrypt.hash(data.clave, 10);
 
-    return this.prisma.usuarios.create({
+    const res = await this.prisma.usuarios.create({
       data: {
         ...data,
         clave: hashedPassword,
@@ -32,6 +32,7 @@ export class UsersService {
         avatar_url: avatarFileName ? `/uploads/avatars/${avatarFileName}` : null,
       },
     });
+    return res;
   }
 
   findAll() {
@@ -45,7 +46,7 @@ export class UsersService {
   }
 
   findByLogin(email: string) {
-    return this.prisma.usuarios.findUnique({
+    return this.prisma.usuarios.findFirst({
       where: { correo: email },
     });
   }
