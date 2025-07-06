@@ -10,7 +10,7 @@ import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async create(data: CreateUserDto, avatarFileName?: string) {
     const existing = await this.prisma.usuarios.findFirst({
@@ -43,6 +43,39 @@ export class UsersService {
     return this.prisma.usuarios.findFirst({
       where: { id_usuario: id },
     });
+  }
+
+  async createRouteSecure(body: any) {
+    const { origen, destino, radio_evento = 500 } = body;
+    const origenWKT = `POINT(${origen.lon} ${origen.lat})`;
+    const destinoWKT = `POINT(${destino.lon} ${destino.lat})`;
+
+    return this.prisma.$queryRawUnsafe(
+       `
+      WITH ruta AS (
+        SELECT
+          ST_MakeLine(
+            ST_GeomFromText($1, 4326),
+            ST_GeomFromText($2, 4326)
+          )::geography AS geom
+      )
+      SELECT
+        z.id_zona,
+        z.nombre,
+        z.descripcion,
+        ST_AsText(z.area) AS area_wkt
+      FROM zonas_seguras z, ruta r
+      WHERE
+        ST_Intersects(z.area, r.geom)
+        AND NOT EXISTS (
+          SELECT 1 FROM eventos e
+          WHERE ST_DWithin(r.geom, e.ubicacion, $3)
+        );
+    `,
+      origenWKT,
+      destinoWKT,
+      radio_evento
+    );
   }
 
   findByLogin(email: string) {
@@ -80,5 +113,5 @@ export class UsersService {
       where: { id_usuario: id },
     });
   }
-  
+
 }

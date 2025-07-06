@@ -56,6 +56,11 @@ export class UsersController {
     return this.usersService.create(createUserDto, avatarFileName);
   }
 
+  @Post('route-secure')
+  createRouteSecure(@Body() body: any) {
+    return this.usersService.createRouteSecure(body);
+  }
+
   @Get()
   findAll() {
     return this.usersService.findAll();
