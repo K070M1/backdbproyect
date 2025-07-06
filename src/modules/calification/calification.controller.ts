@@ -1,14 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, Req } from '@nestjs/common';
 import { CalificationService } from './calification.service';
 import { CreateCalificationDto } from './dto/create-calification.dto';
 import { UpdateCalificationDto } from './dto/update-calification.dto';
+import { Request } from 'express'
+
 
 @Controller('calification')
 export class CalificationController {
   constructor(private readonly calificationService: CalificationService) {}
 
   @Post()
-  create(@Body() createCalificationDto: CreateCalificationDto) {
+  create(@Body() createCalificationDto: any, @Req() req: Request) {
+    if(req?.['user']) {
+      createCalificationDto.id_usuario = parseInt(req?.['user'].id) || 1;
+    }
     return this.calificationService.create(createCalificationDto);
   }
 
@@ -22,7 +27,7 @@ export class CalificationController {
     return this.calificationService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() updateCalificationDto: UpdateCalificationDto) {
     return this.calificationService.update(+id, updateCalificationDto);
   }

@@ -40,7 +40,7 @@ export class UsersService {
   }
 
   findOne(id: number) {
-    return this.prisma.usuarios.findUnique({
+    return this.prisma.usuarios.findFirst({
       where: { id_usuario: id },
     });
   }
@@ -80,8 +80,5 @@ export class UsersService {
       where: { id_usuario: id },
     });
   }
-
-  async consulta() {
-    return this.prisma.$queryRaw`SELECT * FROM usuarios`;
-  }
+  
 }
