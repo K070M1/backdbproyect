@@ -7,39 +7,53 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
-model calificacion {
-  id_calificacion   Int       @id @default(autoincrement())
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model calificaciones {
+  id_calificacion   Int            @id @default(autoincrement())
   id_usuario        Int?
-  calificacion      Int?
-  comentario        String?
+  calificacion      Int?           @db.SmallInt
+  comentario        String?        @default("")
   id_evento         Int?
-  id_zona_segura    Int?
-  tipo_calificacion String?   @db.VarChar(50)
-  usuarios          usuarios? @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
+  id_zona           Int?
+  tipo_calificacion String?        @default("evento") @db.VarChar
+  created_at        DateTime       @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamptz(6)
+  updated_at        DateTime?      @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
+  eventos           eventos?       @relation(fields: [id_evento], references: [id_evento], onDelete: Cascade, onUpdate: NoAction)
+  usuarios          usuarios?      @relation(fields: [id_usuario], references: [id_usuario], onDelete: Cascade, onUpdate: NoAction)
+  zonas_seguras     zonas_seguras? @relation(fields: [id_zona], references: [id_zona], onDelete: Cascade, onUpdate: NoAction)
 }
 
-model detalle_ruta {
-  id_detalle_ruta Int       @id @default(autoincrement())
-  id_ruta         Int?
-  id_zona_segura  Int?
-  id_evento       Int?
-  fecha_registro  DateTime? @default(now()) @db.Timestamp(6)
-  rutas           rutas?    @relation(fields: [id_ruta], references: [id_ruta], onDelete: NoAction, onUpdate: NoAction)
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model eventos {
+  id_evento      Int                       @id @default(autoincrement())
+  id_tipo_evento Int?
+  id_usuario     Int?
+  descripcion    String?                   @default("")
+  created_at     DateTime                  @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamptz(6)
+  updated_at     DateTime?                 @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
+  ubicacion      Unsupported("geography")?
+  calificaciones calificaciones[]
+  tipo_evento    tipo_evento?              @relation(fields: [id_tipo_evento], references: [id_tipo_evento], onDelete: Cascade, onUpdate: NoAction)
+  usuarios       usuarios?                 @relation(fields: [id_usuario], references: [id_usuario], onDelete: Cascade, onUpdate: NoAction)
 }
 
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model rutas {
-  id_ruta                               Int            @id @default(autoincrement())
-  id_usuario                            Int?
-  riesgo                                Int?
-  tiempo_estimado                       String?        @db.VarChar
-  id_origen                             Int?
-  id_destino                            Int?
-  favorito                              Boolean?       @default(false)
-  detalle_ruta                          detalle_ruta[]
-  ubicacion_rutas_id_destinoToubicacion ubicacion?     @relation("rutas_id_destinoToubicacion", fields: [id_destino], references: [id_ubicacion], onDelete: NoAction, onUpdate: NoAction)
-  ubicacion_rutas_id_origenToubicacion  ubicacion?     @relation("rutas_id_origenToubicacion", fields: [id_origen], references: [id_ubicacion], onDelete: NoAction, onUpdate: NoAction)
-  usuarios                              usuarios?      @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
+  id_ruta                                   Int          @id @default(autoincrement())
+  id_usuario                                Int?
+  riesgo                                    Int?         @db.SmallInt
+  tiempo_estimado                           String?      @default("") @db.VarChar
+  id_origen                                 Int?
+  id_destino                                Int?
+  favorito                                  Boolean?     @default(false)
+  created_at                                DateTime     @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamptz(6)
+  updated_at                                DateTime?    @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
+  ubicaciones_rutas_id_destinoToubicaciones ubicaciones? @relation("rutas_id_destinoToubicaciones", fields: [id_destino], references: [id_ubicacion], onDelete: Cascade, onUpdate: NoAction)
+  ubicaciones_rutas_id_origenToubicaciones  ubicaciones? @relation("rutas_id_origenToubicaciones", fields: [id_origen], references: [id_ubicacion], onDelete: Cascade, onUpdate: NoAction)
+  usuarios                                  usuarios?    @relation(fields: [id_usuario], references: [id_usuario], onDelete: Cascade, onUpdate: NoAction)
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
@@ -51,45 +65,62 @@ model spatial_ref_sys {
   proj4text String? @db.VarChar(2048)
 }
 
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model tipo_evento {
   id_tipo_evento Int       @id @default(autoincrement())
-  nombre         String    @db.VarChar(100)
+  nombre         String?   @default("") @db.VarChar
+  created_at     DateTime  @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamptz(6)
+  updated_at     DateTime? @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
   eventos        eventos[]
 }
 
-model ubicacion {
-  id_ubicacion                      Int       @id @default(autoincrement())
-  id_usuario                        Int?
-  latitud                           Decimal   @db.Decimal(9, 6)
-  longitud                          Decimal   @db.Decimal(9, 6)
-  nombre                            String?   @db.VarChar(100)
-  rutas_rutas_id_destinoToubicacion rutas[]   @relation("rutas_id_destinoToubicacion")
-  rutas_rutas_id_origenToubicacion  rutas[]   @relation("rutas_id_origenToubicacion")
-  usuarios                          usuarios? @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model ubicaciones {
+  id_ubicacion                        Int                       @id @default(autoincrement())
+  nombre                              String?                   @default("")
+  descripcion                         String?                   @default("")
+  id_usuario                          Int?
+  latitud                             Decimal?                  @db.Decimal
+  longitud                            Decimal?                  @db.Decimal
+  ubicacion                           Unsupported("geography")?
+  created_at                          DateTime                  @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamptz(6)
+  updated_at                          DateTime?                 @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
+  rutas_rutas_id_destinoToubicaciones rutas[]                   @relation("rutas_id_destinoToubicaciones")
+  rutas_rutas_id_origenToubicaciones  rutas[]                   @relation("rutas_id_origenToubicaciones")
+  usuarios                            usuarios?                 @relation(fields: [id_usuario], references: [id_usuario], onDelete: Cascade, onUpdate: NoAction)
 }
 
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model usuarios {
-  id_usuario     Int            @id @default(autoincrement())
-  nombre_usuario String         @db.VarChar(100)
-  clave          String
-  rol            String?        @db.VarChar(20)
-  correo         String         @unique @db.VarChar(100)
-  fecha_registro DateTime?      @default(now()) @db.Timestamp(6)
-  avatar_url     String?
-  activo         Boolean?       @default(true)
-  calificacion   calificacion[]
+  id_usuario     Int              @id @default(autoincrement())
+  nombre_usuario String?          @default("") @db.VarChar
+  clave          String?          @default("")
+  rol            String?          @default("") @db.VarChar
+  correo         String?          @default("") @db.VarChar
+  avatar_url     String?          @default("")
+  activo         Boolean?         @default(true)
+  updated_at     DateTime         @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamptz(6)
+  created_at     DateTime?        @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
+  calificaciones calificaciones[]
   eventos        eventos[]
   rutas          rutas[]
-  ubicacion      ubicacion[]
+  ubicaciones    ubicaciones[]
+  zonas_seguras  zonas_seguras[]
 }
 
-model eventos {
-  id_evento      Int                       @id(map: "evento_pkey") @default(autoincrement())
-  id_tipo_evento Int?
-  descripcion    String?
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model zonas_seguras {
+  id_zona        Int                       @id @default(autoincrement())
   id_usuario     Int?
-  fecha_registro DateTime?                 @default(now()) @db.Timestamp(6)
-  ubicacion      Unsupported("geography")?
-  tipo_evento    tipo_evento?              @relation(fields: [id_tipo_evento], references: [id_tipo_evento], onDelete: NoAction, onUpdate: NoAction, map: "evento_id_tipo_evento_fkey")
-  usuarios       usuarios?                 @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction, map: "evento_id_usuario_fkey")
+  nombre         String?                   @default("") @db.VarChar
+  descripcion    String?                   @default("")
+  area           Unsupported("geography")?
+  created_at     DateTime                  @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamptz(6)
+  updated_at     DateTime?                 @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
+  calificaciones calificaciones[]
+  usuarios       usuarios?                 @relation(fields: [id_usuario], references: [id_usuario], onDelete: Cascade, onUpdate: NoAction)
 }

@@ -7,10 +7,8 @@ import { join } from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-
   // Middleware para cookies
   app.use(cookieParser());
-
   // CORS para frontend
   app.enableCors({
     origin: process.env.FRONTEND_URL || 'http://localhost:3000',

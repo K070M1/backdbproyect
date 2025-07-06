@@ -9,30 +9,30 @@ export class CalificationService {
   constructor(private prisma: PrismaService) {}
 
   create(createCalificationDto: CreateCalificationDto) {
-    return this.prisma.calificacion.create({
+    return this.prisma.calificaciones.create({
       data: createCalificationDto,
     });
   }
 
   findAll() {
-    return this.prisma.calificacion.findMany();
+    return this.prisma.calificaciones.findMany();
   }
 
   findOne(id: number) {
-    return this.prisma.calificacion.findUnique({
+    return this.prisma.calificaciones.findUnique({
       where: { id_calificacion: id },
     });
   }
 
   update(id: number, updateCalificationDto: UpdateCalificationDto) {
-    return this.prisma.calificacion.update({
+    return this.prisma.calificaciones.update({
       where: { id_calificacion: id },
       data: updateCalificationDto,
     });
   }
 
   remove(id: number) {
-    return this.prisma.calificacion.delete({
+    return this.prisma.calificaciones.delete({
       where: { id_calificacion: id },
     });
   }
