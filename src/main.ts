@@ -11,7 +11,7 @@ async function bootstrap() {
   app.use(cookieParser());
   // CORS para frontend
   app.enableCors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    origin: process.env.NEXT_PUBLIC_FRONTEND_URL,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
@@ -23,14 +23,16 @@ async function bootstrap() {
   // Validaciones con DTOs
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
-  // ✅ Rutas públicas: sirve archivos estáticos (ej: avatares)
+  // Rutas públicas: sirve archivos estáticos (ej: avatares)
   app.useStaticAssets(join(__dirname, '..', 'uploads'), {
     prefix: '/public/', // URL pública: http://localhost:5000/public/filename.jpg
   });
 
-  await app.listen(5001);
-  console.log('✅ Backend iniciado en http://localhost:5001/api');
-  console.log('🌐 Archivos públicos en http://localhost:5001/public');
+  const port = process.env.PORT;
+  await app.listen(port);
+
+  console.log(`✅ Backend iniciado en http://localhost:${port}/api`);
+  console.log(`🌐 Archivos públicos en http://localhost:${port}/public`);
 }
 
 bootstrap();
