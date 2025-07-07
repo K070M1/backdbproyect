@@ -10,7 +10,7 @@ import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   async create(data: CreateUserDto, avatarFileName?: string) {
     const existing = await this.prisma.usuarios.findFirst({
@@ -51,7 +51,7 @@ export class UsersService {
     const destinoWKT = `POINT(${destino.lon} ${destino.lat})`;
 
     return this.prisma.$queryRawUnsafe(
-       `
+      `
       WITH ruta AS (
         SELECT
           ST_MakeLine(
@@ -74,7 +74,7 @@ export class UsersService {
     `,
       origenWKT,
       destinoWKT,
-      radio_evento
+      radio_evento,
     );
   }
 
@@ -84,7 +84,11 @@ export class UsersService {
     });
   }
 
-  update(id: number, data: UpdateUserDto) {
+  async update(id: number, data: UpdateUserDto) {
+    if (data.clave) {
+      data.clave = await bcrypt.hash(data.clave, 10);
+    }
+
     return this.prisma.usuarios.update({
       where: { id_usuario: id },
       data,
@@ -113,5 +117,4 @@ export class UsersService {
       where: { id_usuario: id },
     });
   }
-
 }
