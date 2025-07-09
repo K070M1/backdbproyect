@@ -37,7 +37,7 @@ export class RoutesController {
           latitud: origenCoords.lat,
           longitud: origenCoords.lng,
           nombre: origenB || 'Origen Desconocido',
-          direccion: origenAddress || '',
+          // direccion: origenAddress || '',
           id_usuario,
         })
       ).id_ubicacion;
@@ -56,7 +56,7 @@ export class RoutesController {
           latitud: destinoCoords.lat,
           longitud: destinoCoords.lng,
           nombre: destinoB || 'Destino Desconocido',
-          direccion: destinoAddress || '',
+          // direccion: destinoAddress || '',
           id_usuario,
         })
       ).id_ubicacion;
