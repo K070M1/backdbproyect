@@ -28,7 +28,7 @@ async function bootstrap() {
     prefix: '/public/', // URL pública: http://localhost:5000/public/filename.jpg
   });
 
-  const port = process.env.PORT;
+  const port = process.env.PORT ?? 5001;
   await app.listen(port);
 
   console.log(`✅ Backend iniciado en http://localhost:${port}/api`);
