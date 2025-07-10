@@ -24,12 +24,11 @@ export class RoutesService {
     return this.prisma.$queryRaw`
       SELECT r.*, 
         u1.nombre as origen, 
-        u1.direccion as origen_direccion,
-        u2.nombre as destino,
-        u2.direccion as destino_direccion
+        u2.nombre as destino
       FROM rutas r 
       JOIN ubicaciones u1 ON r.id_origen = u1.id_ubicacion 
-      JOIN ubicaciones u2 ON r.id_destino = u2.id_ubicacion`;
+      JOIN ubicaciones u2 ON r.id_destino = u2.id_ubicacion
+    `;
   }
 
   findOne(id: number) {
