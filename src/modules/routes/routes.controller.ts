@@ -38,6 +38,7 @@ export class RoutesController {
           longitud: origenCoords.lng,
           nombre: origenB || 'Origen Desconocido',
           descripcion: origenAddress || '',
+
           id_usuario,
         })
       ).id_ubicacion;
