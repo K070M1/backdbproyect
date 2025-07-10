@@ -29,7 +29,8 @@ export class RoutesService {
         u2.descripcion as destino_direccion
       FROM rutas r 
       JOIN ubicaciones u1 ON r.id_origen = u1.id_ubicacion 
-      JOIN ubicaciones u2 ON r.id_destino = u2.id_ubicacion`;
+      JOIN ubicaciones u2 ON r.id_destino = u2.id_ubicacion
+    `;
   }
 
   findOne(id: number) {
