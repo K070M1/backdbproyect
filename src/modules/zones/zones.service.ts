@@ -8,7 +8,7 @@ export class ZonesService {
   constructor(private prisma: PrismaService) { }
 
   async create(createZoneDto: any) {
-    const { nombre, descripcion, shapeData, id_usuario, tipoPoligono } = createZoneDto;
+    const { nombre, descripcion, shapeData, id_usuario, tipoPoligono, inseguro = false } = createZoneDto;
 
     if (!shapeData) {
       throw new Error('Necesitas proporcionar datos de forma para crear una zona segura.');
@@ -44,9 +44,9 @@ export class ZonesService {
 
     // Construye el query embebiendo solo el areaSQL
     const query = `
-      INSERT INTO zonas_seguras (nombre, descripcion, area, id_usuario, forma)
-      VALUES ($1, $2, ${areaSQL}, $3, $4)
-      RETURNING id_zona, nombre, descripcion, ST_AsGeoJSON(area) AS area, id_usuario, forma;
+      INSERT INTO zonas_seguras (nombre, descripcion, area, id_usuario, forma, inseguro)
+      VALUES ($1, $2, ${areaSQL}, $3, $4, $5)
+      RETURNING id_zona, nombre, descripcion, ST_AsGeoJSON(area) AS area, id_usuario, forma, inseguro;
     `;
 
     const result = await this.prisma.$queryRawUnsafe(
@@ -54,7 +54,8 @@ export class ZonesService {
       nombre,
       descripcion,
       id_usuario,
-      tipoPoligono
+      tipoPoligono,
+      inseguro
     );
 
     return result[0];
@@ -70,6 +71,7 @@ export class ZonesService {
         ST_AsGeoJSON(area) AS geojson,
         ST_Area(area) AS area_m2,
         ST_Perimeter(area::geometry) AS perimeter_m,
+        inseguro,
         created_at,
         updated_at
       FROM zonas_seguras
@@ -87,6 +89,7 @@ export class ZonesService {
         ST_AsGeoJSON(area) AS geojson,
         ST_Area(area) AS area_m2,
         ST_Perimeter(area::geometry) AS perimeter_m,
+        inseguro,
         created_at,
         updated_at
       FROM zonas_seguras
@@ -95,14 +98,26 @@ export class ZonesService {
   }
 
   async update(id: number, updateZoneDto: any) {
-    const { nombre, descripcion, shapeData, tipoPoligono } = updateZoneDto;
+    const { nombre, descripcion, shapeData, tipoPoligono, inseguro = false } = updateZoneDto;
 
     // Si no hay nuevos datos de forma, solo actualizar nombre y descripción
     if (!shapeData || !tipoPoligono) {
-      return this.prisma.zonas_seguras.update({
-        where: { id_zona: id },
-        data: { nombre, descripcion },
-      });
+      const updateQuery = `
+        UPDATE zonas_seguras 
+        SET nombre = $1, descripcion = $2, inseguro = $3, updated_at = NOW()
+        WHERE id_zona = $4
+        RETURNING *;
+      `;
+      
+      const result = await this.prisma.$queryRawUnsafe(
+        updateQuery,
+        nombre,
+        descripcion,
+        inseguro,
+        id
+      );
+      
+      return result[0];
     }
 
     // Si hay nuevos datos de forma, actualizar con geometría
@@ -137,9 +152,9 @@ export class ZonesService {
     // Construir el query de actualización
     const query = `
       UPDATE zonas_seguras 
-      SET nombre = $1, descripcion = $2, area = ${areaSQL}, forma = $3, updated_at = NOW()
-      WHERE id_zona = $4
-      RETURNING id_zona, nombre, descripcion, ST_AsGeoJSON(area) AS area, forma;
+      SET nombre = $1, descripcion = $2, area = ${areaSQL}, forma = $3, inseguro = $4, updated_at = NOW()
+      WHERE id_zona = $5
+      RETURNING id_zona, nombre, descripcion, ST_AsGeoJSON(area) AS area, forma, inseguro;
     `;
 
     const result = await this.prisma.$queryRawUnsafe(
@@ -147,6 +162,7 @@ export class ZonesService {
       nombre,
       descripcion,
       tipoPoligono,
+      inseguro,
       id
     );
 

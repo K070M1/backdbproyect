@@ -66,7 +66,9 @@ export class UsersService {
         ST_AsText(z.area) AS area_wkt
       FROM zonas_seguras z, ruta r
       WHERE
-        ST_Intersects(z.area, r.geom)
+        z.inseguro = false
+        AND ST_DWithin(r.geom, z.area, $3)
+        AND ST_Intersects(z.area, r.geom)
         AND NOT EXISTS (
           SELECT 1 FROM eventos e
           WHERE ST_DWithin(r.geom, e.ubicacion, $3)

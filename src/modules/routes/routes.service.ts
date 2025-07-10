@@ -33,17 +33,30 @@ export class RoutesService {
     `;
   }
 
-  findOne(id: number) {
-    return this.prisma.rutas.findUnique({
-      where: { id_ruta: id },
-    });
+  async findOne(id: number) {
+    const result = await this.prisma.$queryRaw`
+      SELECT r.*, 
+        u1.nombre as origen, 
+        u1.descripcion as origen_direccion,
+        u1.latitud as origen_lat,
+        u1.longitud as origen_lng,
+        u2.nombre as destino,
+        u2.descripcion as destino_direccion,
+        u2.latitud as destino_lat,
+        u2.longitud as destino_lng
+      FROM rutas r 
+      JOIN ubicaciones u1 ON r.id_origen = u1.id_ubicacion 
+      JOIN ubicaciones u2 ON r.id_destino = u2.id_ubicacion
+      WHERE r.id_ruta = ${id}
+    `;
+    
+    return result[0] || null;
   }
 
   update(id: number, updateRouteDto: UpdateRouteDto) {
     return this.prisma.rutas.update({
       where: { id_ruta: id },
       data: {
-        id_usuario: updateRouteDto.id_usuario,
         id_origen: updateRouteDto.id_origen,
         id_destino: updateRouteDto.id_destino,
         riesgo: updateRouteDto.riesgo,
