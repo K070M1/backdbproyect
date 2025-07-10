@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, Req } from '@nestjs/common';
 import { RoutesService } from './routes.service';
-import { CreateRouteDto } from './dto/create-route.dto';
 import { LocationService } from '../location/location.service';
 import { UpdateRouteDto } from './dto/update-route.dto';
+import { Request } from 'express';
 
 @Controller('routes')
 export class RoutesController {
@@ -12,7 +12,7 @@ export class RoutesController {
   ) {}
 
   @Post()
-  async create(@Body() createRouteDto: any) {
+  async create(@Body() createRouteDto: any, @Req() request: Request) {
     const {
       origenCoords,
       destinoCoords,
@@ -20,9 +20,11 @@ export class RoutesController {
       destino: destinoB,
       origenAddress,
       destinoAddress,
-      id_usuario,
-      ...request
+      ...requst
     } = createRouteDto;
+
+    const user = request?.['user'];
+    if(user) requst.id_usuario = parseInt(user.id) || 1;
 
     const origen = await this.locationService.findByCoordinates(
       origenCoords.lat,
@@ -30,15 +32,15 @@ export class RoutesController {
     );
 
     if (origen) {
-      request.id_origen = origen.id_ubicacion;
+      requst.id_origen = origen.id_ubicacion;
     } else {
-      request.id_origen = (
+      requst.id_origen = (
         await this.locationService.create({
           latitud: origenCoords.lat,
           longitud: origenCoords.lng,
           nombre: origenB || 'Origen Desconocido',
           descripcion: origenAddress || '',
-          id_usuario,
+          id_usuario: requst.id_usuario,
         })
       ).id_ubicacion;
     }
@@ -49,20 +51,20 @@ export class RoutesController {
     );
 
     if (destino) {
-      request.id_destino = destino.id_ubicacion;
+      requst.id_destino = destino.id_ubicacion;
     } else {
-      request.id_destino = (
+      requst.id_destino = (
         await this.locationService.create({
           latitud: destinoCoords.lat,
           longitud: destinoCoords.lng,
           nombre: destinoB || 'Destino Desconocido',
           descripcion: destinoAddress || '',
-          id_usuario,
+          id_usuario: requst.id_usuario,
         })
       ).id_ubicacion;
     }
 
-    return this.routesService.create({ ...request, id_usuario });
+    return this.routesService.create({ ...requst, id_usuario: requst.id_usuario });
   }
 
   @Get()
