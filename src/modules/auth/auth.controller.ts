@@ -61,7 +61,7 @@ export class AuthController {
 
 
     const isValid = await bcrypt.compare(body.clave, userFound.clave);
-    if (!isValid) throw new BadRequestException({ message: 'La contraseña ingresada es incorrecta.'});
+    if (!isValid) throw new BadRequestException({ message: 'La contraseña ingresada es incorrecta.' });
 
     const token = await this.jwtService.signAsync({
       id: userFound.id_usuario,
@@ -108,6 +108,10 @@ export class AuthController {
       user: user.nombre_usuario,
       email: user.correo,
       rol: user.rol,
+      created_at: user.created_at,
+      // updated_at: user.updated_at,
+      activo: user.activo,
+      avatar_url: user.avatar_url,
     };
   }
 }
