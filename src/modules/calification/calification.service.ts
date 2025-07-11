@@ -15,7 +15,11 @@ export class CalificationService {
   }
 
   findAll() {
-    return this.prisma.calificaciones.findMany();
+    return this.prisma.calificaciones.findMany({
+      include: {
+        usuarios: true
+      },
+    });
   }
 
   findOne(id: number) {
