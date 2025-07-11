@@ -49,7 +49,7 @@ export class RoutesService {
       JOIN ubicaciones u2 ON r.id_destino = u2.id_ubicacion
       WHERE r.id_ruta = ${id}
     `;
-    
+
     return result[0] || null;
   }
 
