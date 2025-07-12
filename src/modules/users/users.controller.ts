@@ -83,4 +83,14 @@ export class UsersController {
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.remove(id);
   }
+
+  @Put('position/:id')
+  async updatePosition(@Param('id', ParseIntPipe) id: number, @Body() body: { lat: number; lon: number }) {
+    const { lat, lon } = body;
+    if(!lat || !lon) {
+      throw new Error('Latitud y longitud son requeridas');
+    }
+    return this.usersService.saveLocation(id, lat, lon);
+  }
+
 }
