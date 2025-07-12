@@ -10,6 +10,8 @@ import { CalificationModule } from './modules/calification/calification.module';
 import { ZonesModule } from './modules/zones/zones.module';
 
 import { TokenMiddleware } from './middlewares/token.middleware'
+import { EventsGateway } from './sockets/events.gateway'
+import { MailModule } from './modules/mail/mail.module';
 
 @Module({
   imports: [
@@ -22,9 +24,10 @@ import { TokenMiddleware } from './middlewares/token.middleware'
     LocationModule,
     CalificationModule,
     ZonesModule,
+    MailModule
   ],
   controllers: [],
-  providers: [],
+  providers: [EventsGateway],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

@@ -2,15 +2,23 @@ import { Controller, Get, Post, Body, Put, Param, Delete, Req } from '@nestjs/co
 import { EventsService } from './events.service';
 import { Request } from 'express'
 
+import { MailService } from '../mail/mail.service';
+
 @Controller('events')
 export class EventsController {
-  constructor(private readonly eventsService: EventsService) {}
+  constructor(private readonly eventsService: EventsService, private readonly mailService: MailService) {}
 
   @Post()
-  create(@Body() createEventDto: any, @Req() req: Request) {
+  async create(@Body() createEventDto: any, @Req() req: Request) {
     const user = req?.['user'];
     if(user) createEventDto.id_usuario = parseInt(user.id) || 1;
-    return this.eventsService.create(createEventDto);
+    const res = await this.eventsService.create(createEventDto);
+    if(res && res.id_evento) {
+      const subject = 'Nuevo Evento Registrado';
+      const text = `Se ha registrado un nuevo evento: ${createEventDto.descripcion}`;
+      await this.mailService.sendNotificationEmail({ eventId: res.id_evento }, subject, text);
+    }
+    return res;
   }
 
   @Get()

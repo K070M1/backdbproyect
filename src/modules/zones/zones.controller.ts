@@ -4,14 +4,23 @@ import { CreateZoneDto } from './dto/create-zone.dto';
 import { UpdateZoneDto } from './dto/update-zone.dto';
 import { Request } from 'express'
 
+import { MailService } from '../mail/mail.service';
+
 @Controller('zones')
 export class ZonesController {
-  constructor(private readonly zonesService: ZonesService) {}
+  constructor(private readonly zonesService: ZonesService, private readonly mailService: MailService) {}
 
   @Post()
-  create(@Body() createZoneDto: any, @Req() req: Request) {
+  async create(@Body() createZoneDto: any, @Req() req: Request) {
     if(req?.['user']) createZoneDto.id_usuario = req?.['user'].id;
-    return this.zonesService.create(createZoneDto);
+
+    const res = await this.zonesService.create(createZoneDto);
+    if(res && res.id_zona) {
+      const subject = `Nueva Zona ${res.inseguro ? 'Insegura' : 'Segura'} Registrada`;
+      const text = `Se ha registrado una nueva zona: ${createZoneDto.descripcion}`;
+      await this.mailService.sendNotificationEmail({ zoneId: res.id_zona }, subject, text);
+    }
+    return res;
   }
 
   @Get()

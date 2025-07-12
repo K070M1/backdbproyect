@@ -5,16 +5,16 @@ import { PrismaService } from 'src/db/prisma.service';
 
 @Injectable()
 export class EventsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async create(createEventDto: any) {
     const { id_tipo_evento, descripcion, id_usuario, lat, lng } = createEventDto;
-    const result = await this.prisma.$executeRaw`
+    const result = await this.prisma.$queryRaw`
       INSERT INTO eventos (id_tipo_evento, descripcion, id_usuario, ubicacion)
       VALUES (${id_tipo_evento}, ${descripcion}, ${id_usuario}, ST_SetSRID(ST_MakePoint(${lng}, ${lat}), 4326))
       RETURNING *;
     `;
-    return result;
+    return result[0];
   }
 
   async findAll() {

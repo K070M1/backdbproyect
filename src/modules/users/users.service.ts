@@ -119,4 +119,17 @@ export class UsersService {
       where: { id_usuario: id },
     });
   }
+
+  async saveLocation(id: number, lat: number, lon: number) {
+    const usuario = await this.findOne(id);
+    if (!usuario) {
+      throw new NotFoundException('Usuario no encontrado');
+    }
+
+    return this.prisma.$queryRaw`
+      UPDATE usuarios
+      SET posicion_actual = ST_SetSRID(ST_MakePoint(${lon}, ${lat}), 4326)
+      WHERE id_usuario = ${id}
+    `;
+  }
 }
