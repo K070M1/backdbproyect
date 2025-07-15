@@ -68,6 +68,7 @@ export class ZonesService {
         nombre,
         descripcion,
         forma,
+        id_usuario,
         ST_AsGeoJSON(area) AS geojson,
         ST_Area(area) AS area_m2,
         ST_Perimeter(area::geometry) AS perimeter_m,
