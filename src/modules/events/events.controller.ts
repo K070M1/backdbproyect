@@ -13,6 +13,7 @@ export class EventsController {
     const user = req?.['user'];
     if(user) createEventDto.id_usuario = parseInt(user.id) || 1;
     const res = await this.eventsService.create(createEventDto);
+    console.log('Evento creado:', res);
     if(res && res.id_evento) {
       const subject = 'Nuevo Evento Registrado';
       const text = `Se ha registrado un nuevo evento: ${createEventDto.descripcion}`;

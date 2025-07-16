@@ -43,20 +43,20 @@ export class MailService {
       // Enviar emails a usuarios en la zona segura
       for (const user of users) {
         const zoneSubject = `🛡️ ${subject}`;
-        const zoneText = `${text}\n\n. Mantente alerta y sigue las recomendaciones de seguridad.`;
+        const zoneText = `${text}\n\n Mantente alerta y sigue las recomendaciones de seguridad.`;
         await this._processSendEmail(user.correo, zoneSubject, zoneText);
       }
     }
 
     if (data.eventId) {
-      // Buscar usuarios cerca del evento (dentro de 100 metros)
+      // Buscar usuarios cerca del evento (dentro de 500 metros)
       users = await this.getUsersNearEvent(data.eventId);
       
       // Enviar emails a usuarios cerca del evento
       for (const user of users) {
         const eventSubject = `⚠️ ${subject} - Alerta de Evento Cercano`;
-        const eventText = `${text}\n\nSe ha detectado un evento cerca de tu ubicación (menos de 100 metros). Por favor, toma las precauciones necesarias.`;
-        console.log(`Enviando email a ${user.correo} sobre evento ${data.eventId}`);
+        const eventText = `${text}\n\nSe ha detectado un evento cerca de tu ubicación (menos de 500 metros). Por favor, toma las precauciones necesarias.`;
+        await this._processSendEmail(user.correo, eventSubject, eventText);
       }
     }
 
@@ -93,7 +93,7 @@ export class MailService {
       WHERE e.id_evento = ${eventId}
         AND u.posicion_actual IS NOT NULL
         AND e.ubicacion IS NOT NULL
-        AND ST_DWithin(u.posicion_actual, e.ubicacion, 100)
+        AND ST_DWithin(u.posicion_actual, e.ubicacion, 500)
       ORDER BY distancia_metros ASC
     `;
     

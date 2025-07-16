@@ -12,7 +12,8 @@ export class EventsService {
     const result = await this.prisma.$queryRaw`
       INSERT INTO eventos (id_tipo_evento, descripcion, id_usuario, ubicacion)
       VALUES (${id_tipo_evento}, ${descripcion}, ${id_usuario}, ST_SetSRID(ST_MakePoint(${lng}, ${lat}), 4326))
-      RETURNING *;
+      RETURNING id_evento, id_tipo_evento, descripcion, id_usuario, created_at,
+        ST_X(ubicacion::geometry) AS lng, ST_Y(ubicacion::geometry) AS lat;
     `;
     return result[0];
   }
