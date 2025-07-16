@@ -1,0 +1,36 @@
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
+import { UsersModule } from './modules/users/users.module';
+import { PrismaModule } from './db/prisma.module'
+import { AuthModule } from './modules/auth/auth.module'
+import { RoutesModule } from './modules/routes/routes.module';
+import { TypeEventModule } from './modules/type-event/type-event.module';
+import { EventsModule } from './modules/events/events.module';
+import { LocationModule } from './modules/location/location.module';
+import { CalificationModule } from './modules/calification/calification.module';
+import { ZonesModule } from './modules/zones/zones.module';
+
+import { TokenMiddleware } from './middlewares/token.middleware'
+import { EventsGateway } from './sockets/events.gateway'
+import { MailModule } from './modules/mail/mail.module';
+
+@Module({
+  imports: [
+    PrismaModule, 
+    UsersModule,
+    AuthModule,
+    RoutesModule,
+    TypeEventModule,
+    EventsModule,
+    LocationModule,
+    CalificationModule,
+    ZonesModule,
+    MailModule
+  ],
+  controllers: [],
+  providers: [EventsGateway],
+})
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(TokenMiddleware).forRoutes('*');
+  }
+}
