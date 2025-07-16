@@ -1,94 +1,124 @@
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
+  <a href="http://nestjs.com/" target="_blank">
+    <img src="https://nestjs.com/img/logo-small.svg" width="200" alt="NestJS Logo" />
+  </a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+[![CircleCI](https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456)](https://circleci.com/gh/nestjs/nest)
 
-## Instalación
+---
 
-```bash
-# Primer paso (Primario)
-$ git clone https://github.com/K070M1/backdbproyect.git
+# BackDBProyect
 
-# Segundo paso 
-$ git pull origin main
+Proyecto backend con NestJS y Prisma, preparado para trabajar con bases de datos locales o Supabase.
 
-# Tercer paso
-$ npm install - npm i
-
-# Cuarto paso - Crear .env
-$ DATABASE_URL="postgresql://usuario:clave@localhost:5432/baseDatos?schema=public"
-$ TOKEN_SECRET="dbProyectConnection"
-
-# Quinto paso (Corres el proyecto: Puerto 5000)
-$ npm run start:dev
-
-# Adicional*
-$ npm i -g @nestjs/cli
-$ nest g res modules/{nombre}
-```
-
-## Configuración del entorno para usar `SUPABASE`
-
-> **Importante:** Antes de empezar, elimina `node_modules` y `package-lock.json`, luego ejecuta `npm install` para instalar dependencias limpias.
-
-### 1. Configura tu DATABASE_URL en `.env`
-
-Abre (o crea) tu archivo `.env` y coloca tu string de conexión:
-
-```env
-DATABASE_URL="postgres://prisma.sxjlyiclvgdgfetdgabz:TGqxUEa5pk9hTvaY@aws-0-us-east-2.pooler.supabase.com:5432/postgres"
-```
-
-### 2. Asegúrate de que tu archivo `prisma/schema.prisma` tenga solo lo siguiente:
-
-```prisma
-generator client {
-  provider = "prisma-client-js"
-}
-
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-```
-
-### 3. Sincroniza el esquema de la base de datos
+## 🚀 Instalación rápida
 
 ```bash
-npx prisma db pull
-```
+# Clona el repositorio
+git clone https://github.com/K070M1/backdbproyect.git
 
-### 4. Genera el cliente Prisma
+# Entra al directorio
+cd backdbproyect
 
-```bash
-npx prisma generate
+# Actualiza la rama principal
+git pull origin main
+
+# Instala dependencias
+npm install
+
+# Crea tu .env y configura variables
+echo DATABASE_URL="postgresql://usuario:clave@localhost:5432/baseDatos?schema=public" >> .env
+echo TOKEN_SECRET="TU_TOKEN_AQUI" >> .env
+
+# Inicia el proyecto (Puerto 5000)
+npm run start:dev
+
+# Opcional: Instala Nest CLI y genera un recurso
+npm i -g @nestjs/cli
+nest g res modules/{nombre}
 ```
 
 ---
 
-**Listo. Ahora tu proyecto está listo para conectarse a la base de datos de Supabase usando Prisma.**
+## ⚡ Configura Supabase
 
-## Subir cambios al repositorio
+> **Importante:**  
+> Elimina `node_modules` y `package-lock.json`, luego ejecuta `npm install` para instalar dependencias limpias.
+
+1. **DATABASE_URL en `.env`**
+
+   Crea o edita tu archivo `.env`:
+
+   ```env
+   DATABASE_URL="TU_URL_SUPABASE_AQUI"
+   ```
+
+2. **Configura `prisma/schema.prisma`**
+
+   Asegúrate de que contenga solo esto:
+
+   ```prisma
+   generator client {
+     provider = "prisma-client-js"
+   }
+
+   datasource db {
+     provider = "postgresql"
+     url      = env("DATABASE_URL")
+   }
+   ```
+
+3. **Sincroniza esquema de base de datos**
+
+   ```bash
+   npx prisma db pull
+   ```
+
+4. **Genera el cliente Prisma**
+
+   ```bash
+   npx prisma generate
+   ```
+
+---
+
+✅ ¡Listo! Tu proyecto está preparado para conectarse a Supabase con Prisma.
+
+---
+
+## 📤 Subir cambios al repositorio
 
 ```bash
+# Configura tu cuenta local de git
+git config --global user.name "Tu usuario"
+git config --global user.email "Tu email"
 
-# Cambiar configuración de cuenta local de git
-$ git config --global user.name = "Tu usuario"
-$ git config --global user.email = "Tu email"
+# Crea una nueva rama
+git checkout -b TuNombre
 
+# Agrega cambios
+git add .
 
-# Primer paso - Crear Rama
-$ git checkout -B "TuNombre"
+# Haz commit
+git commit -m "Descripción del commit"
 
-# Segundo paso
-$ git add .
-
-# Tercer paso
-$ git commit -m "Nombre commit"
-
-# Cuarto paso
-$ git push origin "TuNombre"
+# Sube tus cambios
+git push origin TuNombre
 ```
 
+---
+
+## 💡 Tips adicionales
+
+- Si tienes problemas con dependencias, ejecuta `npm ci` para una instalación limpia.
+- Usa ramas descriptivas para nuevas funcionalidades o correcciones.
+- Haz siempre pull antes de agregar nuevos cambios.
+
+---
+
+## 📚 Recursos
+
+- [NestJS Documentación](https://docs.nestjs.com/)
+- [Prisma](https://www.prisma.io/docs/)
+- [Supabase](https://supabase.com/docs)
