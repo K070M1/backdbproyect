@@ -12,12 +12,12 @@ import { MailService } from './mail.service';
         port: 587,
         secure: false,
         auth: {
-          user: "tranquirutas4@gmail.com",
-          pass: "htus yawi bbsr they"
+          user: "TU_USUARIO_DE_GMAIL",
+          pass: "TU_CONTRASENA_DE_APLICACION_GMAIL"
         }
       },
       defaults: {
-        from: '"Alertas" <tranquirutas4@gmail.com>',
+        from: '"Alertas" <TU_USUARIO_DE_GMAIL>',
       },
       options: {
         logger: true,
